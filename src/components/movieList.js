@@ -9,15 +9,18 @@ import {
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 
-const MovieList = ({ title, data }) => {
+const MovieList = ({ title, data, hidedSeeAll }) => {
+  const movieTitle = "John Wick";
   const navigation = useNavigation();
   return (
     <View className="my-4">
       <View className="flex-row justify-between items-center mb-4">
         <Text className="text-white text-lg">{title}</Text>
-        <TouchableOpacity>
-          <Text className=" text-gray-400 text-base">See all</Text>
-        </TouchableOpacity>
+        {!hidedSeeAll && (
+          <TouchableOpacity>
+            <Text className=" text-gray-400 text-base">See all</Text>
+          </TouchableOpacity>
+        )}
       </View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {data.map((item) => (
@@ -32,8 +35,11 @@ const MovieList = ({ title, data }) => {
                 }}
                 className="w-40 h-60 rounded-xl"
               ></Image>
-              <Text numberOfLines={1} className="w-40 text-white text-base mt-2">
-                John Wick
+              <Text
+                numberOfLines={1}
+                className="w-40 text-white text-base mt-2"
+              >
+                {movieTitle}
               </Text>
             </View>
           </TouchableWithoutFeedback>
