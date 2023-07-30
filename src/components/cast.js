@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
 import React from "react";
+import { getAvatar } from "../api/moviedb";
 
 const Cast = ({ cast }) => {
   let personName = "Keanu Reeves";
@@ -17,16 +18,16 @@ const Cast = ({ cast }) => {
               >
                 <Image
                   source={{
-                    uri: "https://m.media-amazon.com/images/M/MV5BNGJmMWEzOGQtMWZkNS00MGNiLTk5NGEtYzg1YzAyZTgzZTZmXkEyXkFqcGdeQXVyMTE1MTYxNDAw._V1_FMjpg_UX1000_.jpg",
+                    uri:  getAvatar(item?.profile_path),
                   }}
                   className="w-24 h-24 rounded-full"
                 />
 
                 <Text numberOfLines={2} className="text-white text-center mt-2">
-                  {personName}
+                  {item.name}
                 </Text>
                 <Text numberOfLines={2} className="text-white text-center mt-2">
-                  {characterName}
+                  {item.character}
                 </Text>
               </TouchableOpacity>
             );
