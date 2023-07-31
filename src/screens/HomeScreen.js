@@ -7,18 +7,22 @@ import { Entypo } from "@expo/vector-icons";
 import TrendingMovies from "../components/trendingMovies";
 import MovieList from "../components/movieList";
 import { useNavigation } from "@react-navigation/native";
-import { fetchTopRated, fetchTrending, fetchUpcoming } from "../api/moviedb";
+import { fetchPopular, fetchTopRated, fetchTrending, fetchUpcoming } from "../api/moviedb";
 
 const HomeScreen = () => {
   const [trending, setTrending] = useState([]);
   const [upcoming, setUpcoming] = useState([]);
   const [topRate, setTopRate] = useState([]);
+  const [popular, setPopular] = useState([]);
+
+
   const navigation = useNavigation();
 
   useEffect(() => {
     getTrendingMovies();
     getUpcomingMovies();
     getTopRatedMovies();
+    getPopularMovies();
   }, []);
 
   const getTrendingMovies = async () => {
@@ -41,6 +45,14 @@ const HomeScreen = () => {
       setTopRate(data.results);
     }
   };
+
+  const getPopularMovies = async () => {
+    const data = await fetchPopular();
+    if(data && data.results) {
+      setPopular(data.results);
+    }
+  };
+
   return (
     <View className="flex-1 bg-neutral-800">
       <SafeAreaView className="mx-3 mb-12">
@@ -56,6 +68,8 @@ const HomeScreen = () => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <TrendingMovies data={trending} />
           <MovieList title="Up coming" data={upcoming} />
+          <MovieList title="Popular" data={popular} />
+
           <MovieList title="Top rate" data={topRate} />
         </ScrollView>
       </SafeAreaView>

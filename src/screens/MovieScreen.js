@@ -30,8 +30,6 @@ const MovieScreen = () => {
   const { params: item } = useRoute();
   const [favorite, setFavorite] = useState(false);
   const navigation = useNavigation();
-  useEffect(() => {}, [item]);
-  let movieTitle = "John Wick Chaper1: Cậu bé bút chì và những người bạn";
   const [movie, setMovie] = useState({});
   const [cast, setCast] = useState([1, 2, 3, 4, 5]);
   const [similarMovies, setSimilarMovies] = useState([1, 2, 3, 4, 5]);
@@ -127,7 +125,7 @@ const MovieScreen = () => {
         </Text>
 
         <Text className="text-neutral-400 text-base mt-1">
-          Realease Date: {movie.release_date}
+          Release Date: {movie.release_date}
         </Text>
 
         <Text className="text-neutral-400 text-base mt-1">

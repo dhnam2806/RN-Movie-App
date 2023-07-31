@@ -25,9 +25,9 @@ const MovieList = ({ title, data, hidedSeeAll }) => {
       </View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {data &&
-          data.map((item) => (
+          data.map((item, index) => (
             <TouchableWithoutFeedback
-              key={item.id}
+              key={index}
               onPress={() => navigation.navigate("MovieScreen", item)}
             >
               <View className="mr-3">

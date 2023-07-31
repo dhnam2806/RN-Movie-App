@@ -3,8 +3,6 @@ import React from "react";
 import { getAvatar } from "../api/moviedb";
 
 const Cast = ({ cast }) => {
-  let personName = "Keanu Reeves";
-  let characterName = "John Wick";
   return (
     <View className="my-4">
       <Text className="text-white text-lg mb-4">Cast</Text>
@@ -14,11 +12,11 @@ const Cast = ({ cast }) => {
             return (
               <TouchableOpacity
                 key={index}
-                className="flex flex-col items-center mr-3 w-24"
+                className="flex flex-col items-center mr-3 w-28"
               >
                 <Image
                   source={{
-                    uri:  getAvatar(item?.profile_path),
+                    uri:  getAvatar(item.profile_path),
                   }}
                   className="w-24 h-24 rounded-full"
                 />
