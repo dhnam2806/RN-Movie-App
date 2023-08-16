@@ -7,7 +7,7 @@ import {
   Image,
   Dimensions,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -17,12 +17,10 @@ const SearchScreen = () => {
   const { width, height } = Dimensions.get("window");
   const navigation = useNavigation();
   const [result, setResult] = useState([]);
-  const movieName = "John Wick";
 
   const handleSearch = (text) => {
     fetchSearchMovies({ query: text }).then((data) => {
       setResult(data.results);
-      // console.log(data.results);
     });
   };
   return (
@@ -49,9 +47,6 @@ const SearchScreen = () => {
       {/* result */}
       {result.length > 0 ? (
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Text className="text-white font-semibold ml-2 mb-2">
-            Result: ({result.length})
-          </Text>
           <View className="flex-row flex-wrap justify-center">
             {result.map((item) => (
               <TouchableOpacity

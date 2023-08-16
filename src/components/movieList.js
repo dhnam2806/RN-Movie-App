@@ -11,7 +11,6 @@ import { useNavigation } from "@react-navigation/native";
 import { getImage342 } from "../api/moviedb";
 
 const MovieList = ({ title, data, hidedSeeAll }) => {
-  const movieTitle = "John Wick";
   const navigation = useNavigation();
   return (
     <View className="my-4">
@@ -24,11 +23,13 @@ const MovieList = ({ title, data, hidedSeeAll }) => {
         )}
       </View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {data &&
+        {
           data.map((item, index) => (
             <TouchableWithoutFeedback
               key={index}
-              onPress={() => navigation.navigate("MovieScreen", item)}
+              onPress={() => {
+                navigation.navigate("MovieScreen", item);
+              }}
             >
               <View className="mr-3">
                 <Image

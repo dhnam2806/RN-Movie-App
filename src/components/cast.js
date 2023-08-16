@@ -7,7 +7,7 @@ const Cast = ({ cast }) => {
     <View className="my-4">
       <Text className="text-white text-lg mb-4">Cast</Text>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        {cast &&
+        {
           cast.map((item, index) => {
             return (
               <TouchableOpacity

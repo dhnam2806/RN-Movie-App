@@ -6,7 +6,7 @@ import {
   Dimensions,
   ImageBackground,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRoute } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -15,29 +15,23 @@ import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import Cast from "../components/cast";
 import MovieList from "../components/movieList";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 import {
   getImage,
   fetchMovieCast,
   fetchMovieDetail,
   fetchMovieSimilar,
-  getOriginal,
 } from "../api/moviedb";
 
 var { width, height } = Dimensions.get("window");
 
 const MovieScreen = () => {
+  const scrollViewRef = useRef();
   const { params: item } = useRoute();
   const [favorite, setFavorite] = useState(false);
   const navigation = useNavigation();
   const [movie, setMovie] = useState({});
-  const [cast, setCast] = useState([1, 2, 3, 4, 5]);
-  const [similarMovies, setSimilarMovies] = useState([1, 2, 3, 4, 5]);
-  useEffect(() => {
-    getMovieDetail(item.id);
-    getMovieCast(item.id);
-    getMovieSimilar(item.id);
-  }, [item]);
+  const [cast, setCast] = useState([]);
+  const [similarMovies, setSimilarMovies] = useState([]);
 
   const getMovieDetail = async (id) => {
     const data = await fetchMovieDetail(id);
@@ -60,10 +54,17 @@ const MovieScreen = () => {
     }
   };
 
+  useEffect(() => {
+    getMovieDetail(item.id);
+    getMovieCast(item.id);
+    getMovieSimilar(item.id);
+    scrollViewRef.current.scrollTo({ y: 0, animated: true });
+  }, [item]);
   return (
     <ScrollView
       contentContainerStyle={{ paddingBottom: 20 }}
       className="flex-1 bg-neutral-800"
+      ref={scrollViewRef}
     >
       <ImageBackground
         source={{
@@ -91,7 +92,7 @@ const MovieScreen = () => {
             }}
           >
             {favorite ? (
-              <Octicons name="heart-fill" size={24} color="white" />
+              <Octicons name="heart-fill" size={24} color="red" />
             ) : (
               <Octicons name="heart" size={24} color="white" />
             )}
@@ -103,16 +104,8 @@ const MovieScreen = () => {
           {movie.title}
         </Text>
 
-        <View className="flex-row self-center my-4">
-          <Octicons name="star-fill" size={24} color="yellow" />
-          <Octicons name="star-fill" size={24} color="yellow" />
-          <Octicons name="star-fill" size={24} color="yellow" />
-          <Octicons name="star-fill" size={24} color="yellow" />
-          <Octicons name="star" size={24} color="yellow" />
-        </View>
-
         {/* Description */}
-        <View className="mt-2">
+        <View className="mt-4">
           <Text className="text-neutral-400 text-base">{movie.overview}</Text>
         </View>
 
@@ -120,7 +113,11 @@ const MovieScreen = () => {
           Genres:{" "}
           {movie?.genres?.map((genre, index) => {
             let comma = index === movie.genres.length - 1 ? "" : ",";
-            return <Text key={index}>{genre.name} {comma} </Text>;
+            return (
+              <Text key={index}>
+                {genre.name} {comma}{" "}
+              </Text>
+            );
           })}{" "}
         </Text>
 
@@ -134,12 +131,19 @@ const MovieScreen = () => {
 
         {/* Cast */}
         <Cast cast={cast} />
+
         {/* Similar Movies */}
-        <MovieList
-          title="Similar Movies"
-          data={similarMovies}
-          hidedSeeAll={true}
-        />
+        <TouchableOpacity
+          onPress={() => {
+            scrollViewRef.current.scrollTo({ y: 0 });
+          }}
+        >
+          <MovieList
+            title="Similar Movies"
+            data={similarMovies}
+            hidedSeeAll={true}
+          />
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
